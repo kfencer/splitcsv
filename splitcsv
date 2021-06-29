@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 
-const NAME = 'splitcsv';
+const NAME = 'csvsplit';
 const VERSION = '1.0.0';
 const DESCRIPTION = 'split a CSV file into pieces';
 
@@ -131,7 +131,7 @@ function process(
     string $prefix
 ): void {
     if ($copyHeader) {
-        $header = fgetcsv(STDIN);
+        $header = fgetcsv(STDIN, 0, ',', '"', '');
 
         if (!is_array($header)) {
             return;
@@ -145,7 +145,7 @@ function process(
 
     $handler = null;
 
-    while(($row = fgetcsv(STDIN)) !== false) {
+    while(($row = fgetcsv(STDIN, 0, ',', '"', '')) !== false) {
         if ($handler === null) {
             $fileName = $prefix . str_pad((string) $file, $postfixLength, '0', STR_PAD_LEFT) . $additionalSuffix;
             $handler = fopen($fileName, 'wb');
